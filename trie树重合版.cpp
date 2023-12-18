@@ -6,7 +6,7 @@
 #include <cmath>
 
 using namespace std;
-
+MUSIC music;
 const int MAX_CHILD = 26; // 假设只包含小写字母
 
 struct TrieNode {
@@ -101,7 +101,7 @@ public:
         // 绘制当前节点并显示字母
         char label_str[2] = {label, '\0'}; // 将当前节点的字母转换为字符串
         DrawVertex(x, y, label_str);
-
+		Sleep(500);
         int newY = y + dy; // 调整节点之间的垂直间距
         for (int i = 0; i < MAX_CHILD; ++i) {
             if (node->children[i] != nullptr) {
@@ -109,9 +109,9 @@ public:
                 int newX = x + (wordIndex.size() - 1) * dx / 2 - wordIndex.size() / 2 * dx + wordIndex[currentWord] * dx;
                 // 绘制边
                 DrawArrowLine(x, y + 10, newX, newY);
-
+				Sleep(500);
                 drawTrie(node->children[i], newX, newY, char('a' + i), node->children[i]->isEndOfWord, dx, dy);
-
+				Sleep(500);
                 // 在单词结束节点处绘制特殊标记
                 if (node->children[i]->isEndOfWord) {
                 	// 调整特殊标记（红色小圆圈）的位置
@@ -129,7 +129,8 @@ public:
 };
 
 int main() {
-
+	music.OpenFile("C:\\Users\\lenovo\\Desktop\\bgm.mp3");
+	music.Play();
     Trie trie;
     vector<string> words;
     string str;
@@ -157,4 +158,3 @@ int main() {
 
     return 0;
 }
-

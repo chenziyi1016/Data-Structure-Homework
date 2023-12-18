@@ -1,11 +1,14 @@
+#include <bits/stdc++.h>
 #include <iostream>
 #include <string>
 #include <vector>
 #include <graphics.h> // EGE图形库
-#include<cmath>
+#include <cmath>
+
 
 using namespace std;
 
+MUSIC music;
 const int MAX_CHILD = 26; // 假设只包含小写字母
 
 struct TrieNode {
@@ -93,17 +96,17 @@ public:
 
     	// 绘制当前节点并显示字母
     	char label_str[2] = {label, '\0'}; // 将当前节点的字母转换为字符串
-   		DrawVertex(x, y, label_str);
-
+		DrawVertex(x, y, label_str);
+		Sleep(500);
     	int newY = y + dy; // 调整节点之间的垂直间距
     	for (int i = 0; i < MAX_CHILD; ++i) {
         	if (node->children[i] != nullptr) {
-            	int newX = x - (dx / 2) + i * dx;
+            	int newX = x - (dx * 2) + i * dx;
             	// 绘制边
             	DrawArrowLine(x, y + 10, newX, newY - 10);
-
+				Sleep(500);
             	drawTrie(node->children[i], newX, newY, char('a' + i), node->children[i]->isEndOfWord, dx /2 , dy);
-
+				Sleep(500);
             	// 在单词结束节点处绘制特殊标记
             	if (node->children[i]->isEndOfWord) {
                 	// 调整特殊标记（红色小圆圈）的位置
@@ -121,13 +124,17 @@ public:
 };
 
 int main() {
-    
+    music.OpenFile("C:\\Users\\lenovo\\Desktop\\bgm.mp3");
+	music.Play();
+	
     Trie trie;
     vector<string> words;
 	string str;
     int n;
+    cout<<"请输入你要插入的单词数量："; 
     cin>>n;
-    while(n--){
+    for(int i=1;i<=n;i++){
+    	cout<<"请输入你要插入的第"<<i<<"个单词："; 
     	cin>>str;
     	words.push_back(str);
 	}
@@ -138,16 +145,20 @@ int main() {
 	initgraph(1920, 1080); // 初始化绘图窗口
     int startX = 960; // 设置图形的起始 X 坐标
     int startY = 50; // 设置图形的起始 Y 坐标
-    int nodeSpacingX = 100; // 节点之间的水平间距
+    int nodeSpacingX = 200; // 节点之间的水平间距
     int nodeSpacingY = 100; // 节点之间的垂直间距
-
+    
+	setfont(40, 0, "宋体");
+	outtextxy(100, 100, "Trie树绘制中……");
+	Sleep(10);
+	
     TrieNode* root = trie.getRoot();
     trie.drawTrie(root, startX, startY, '\0', false, nodeSpacingX, nodeSpacingY); // '\0' 表示根节点为空字母，结束标志设为 false
-
+	setfillcolor(BLACK); // 设置填充颜色为黑色
+	ege_fillrect(100,100,400, 100); // 绘制矩形
     getch(); // 等待用户按下任意键
     closegraph(); // 关闭绘图窗口
 
     return 0;
 }
-
 
